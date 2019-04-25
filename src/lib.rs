@@ -48,6 +48,7 @@ mod imp {
     use winapi::um::handleapi::CloseHandle;
     use winapi::um::synchapi::CreateEventW;
     use winapi::um::winnt::HANDLE;
+    use winapi::um::wincon::SetConsoleTitleW;
 
     struct Handle(HANDLE);
     unsafe impl Send for Handle {}
@@ -62,14 +63,18 @@ mod imp {
         static ref EVENT_HANDLE: Mutex<Option<Handle>> = Mutex::new(None);
     }
 
-    // This is what PostgreSQL does on Windows: make an event handle you can find
-    // using Process Explorer, Process Hacker, etc.
+    // Windows doesn't appear to have a userspace mechanism to name the current
+    // process.
     //
-    // ... I mean... it's better than nothing, I suppose?
+    // Try to set a console title, and in case we're not attached to one,
+    // follow PostgreSQL's lead and create a named event handle that can be
+    // found in Process Explorer, Process Hacker, etc.
     pub fn set_title<T: AsRef<OsStr>>(title: T) {
-        let mut t: Vec<u16> = OsStr::new("proctitle: ").encode_wide().collect();
-        t.extend(title.as_ref().encode_wide());
+        let mut t: Vec<u16> = title.as_ref().encode_wide().take(1024).collect();
         t.push(0);
+
+        unsafe { SetConsoleTitleW(t.as_ptr()) };
+
         let mut handle = EVENT_HANDLE.lock().expect("event handle lock");
 
         handle.replace(Handle(unsafe {
