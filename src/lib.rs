@@ -47,8 +47,8 @@ mod imp {
     use lazy_static::lazy_static;
     use winapi::um::handleapi::CloseHandle;
     use winapi::um::synchapi::CreateEventW;
-    use winapi::um::winnt::HANDLE;
     use winapi::um::wincon::SetConsoleTitleW;
+    use winapi::um::winnt::HANDLE;
 
     struct Handle(HANDLE);
     unsafe impl Send for Handle {}
