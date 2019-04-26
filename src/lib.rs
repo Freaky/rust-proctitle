@@ -116,17 +116,25 @@ mod imp {
     use winapi::um::wincon::SetConsoleTitleW;
     use winapi::um::winnt::HANDLE;
 
-    struct Handle(HANDLE);
-    unsafe impl Send for Handle {}
+    struct NamedHandle(HANDLE);
+    unsafe impl Send for NamedHandle {}
 
-    impl Drop for Handle {
+    impl From<Vec<u16>> for NamedHandle {
+        fn from(t: Vec<u16>) -> Self {
+            assert!(t.ends_with(&[0]));
+
+            Self(unsafe { CreateEventW(std::ptr::null_mut(), 1, 0, t.as_ptr()) })
+        }
+    }
+
+    impl Drop for NamedHandle {
         fn drop(&mut self) {
             unsafe { CloseHandle(self.0) };
         }
     }
 
     lazy_static! {
-        static ref EVENT_HANDLE: Mutex<Option<Handle>> = Mutex::new(None);
+        static ref EVENT_HANDLE: Mutex<Option<NamedHandle>> = Mutex::new(None);
     }
 
     /// Set a process title, or some approximation of it, if possible.
@@ -144,9 +152,7 @@ mod imp {
 
         let mut handle = EVENT_HANDLE.lock().expect("event handle lock");
 
-        handle.replace(Handle(unsafe {
-            CreateEventW(std::ptr::null_mut(), 1, 0, t.as_ptr())
-        }));
+        handle.replace(NamedHandle::from(t));
     }
 }
 
