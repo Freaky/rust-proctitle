@@ -150,9 +150,10 @@ mod imp {
 
         unsafe { SetConsoleTitleW(t.as_ptr()) };
 
-        let mut handle = EVENT_HANDLE.lock().expect("event handle lock");
-
-        handle.replace(NamedHandle::from(t));
+        EVENT_HANDLE
+            .lock()
+            .expect("event handle lock")
+            .replace(NamedHandle::from(t));
     }
 }
 
