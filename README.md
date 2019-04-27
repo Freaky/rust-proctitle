@@ -1,5 +1,6 @@
 # proctitle
 
+[![Cargo](https://img.shields.io/crates/v/proctitle.svg)][crate]
 [![Build Status](https://travis-ci.org/Freaky/rust-proctitle.svg?branch=master)](https://travis-ci.org/Freaky/rust-proctitle)
 
 ## Cross-platform process titles.
@@ -69,3 +70,4 @@ Unsupported platforms merely receive a stub function that does nothing.
 [event handle]: https://docs.microsoft.com/en-us/windows/desktop/api/synchapi/nf-synchapi-createeventa
 [Process Explorer]: https://docs.microsoft.com/en-us/sysinternals/downloads/process-explorer
 [Process Hacker]: https://processhacker.sourceforge.io/
+[crate]: https://crates.io/crates/proctitle
