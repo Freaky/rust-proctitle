@@ -117,9 +117,9 @@ mod imp {
         let mut buf = vec![0; t.len()];
         let len = unsafe { winapi::um::wincon::GetConsoleTitleW(buf.as_mut_ptr(), buf.len() as u32) };
 
-        assert_eq!(len, title.len() as u32);
-        assert_eq!(buf, t);
-        assert!(EVENT_HANDLE.lock().unwrap().is_some());
+        assert_eq!(len, title.len() as u32, "length mismatch");
+        assert_eq!(buf, t, "buffer mismatch");
+        assert!(EVENT_HANDLE.lock().unwrap().is_some(), "event handle missing");
     }
 }
 
@@ -141,7 +141,11 @@ mod imp {
 
 pub use imp::*;
 
+// This races against the SetConsoleTitle() tests on Windows
+#[cfg(not(windows))]
 #[test]
 fn set_title_is_at_least_callable() {
-    set_title("bleep bloop");
+    set_title("What was it like being a hamster?");
+    set_title(String::from("It was better than being a chicken."));
+    set_title(std::ffi::OsString::from("Have you seen the size of an egg?"));
 }
