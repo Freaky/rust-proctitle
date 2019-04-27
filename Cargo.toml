@@ -1,8 +1,15 @@
 [package]
 name = "proctitle"
 version = "0.1.0"
+description = "A safe interface to setting process titles"
 authors = ["Thomas Hurst <tom@hur.st>"]
 edition = "2018"
+license = "MIT"
+repository = "https://github.com/Freaky/rust-proctitle"
+documentation = "https://docs.rs/proctitle"
+keywords = ["process", "title", "setproctitle"]
+categories = ["os"]
+readme = "README.md"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 libc = "0.2.51"
