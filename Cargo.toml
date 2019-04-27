@@ -4,9 +4,9 @@ version = "0.1.0"
 authors = ["Thomas Hurst <tom@hur.st>"]
 edition = "2018"
 
-[target."cfg(linux)".dependencies]
+[target.'cfg(target_os = "linux")'.dependencies]
 libc = "0.2.51"
 
 [target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3", features = ["handleapi", "synchapi", "wincon", "winnt"]}
+winapi = { version = "0.3", features = ["handleapi", "synchapi", "wincon", "winerror", "winnt"]}
 lazy_static = "1.3.0"

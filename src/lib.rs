@@ -41,6 +41,16 @@ mod imp {
             unsafe { libc::prctl(libc::PR_SET_NAME, title.as_ptr(), 0, 0, 0) };
         }
     }
+
+    #[test]
+    fn set_title_sets_name() {
+        use libc;
+        set_title("abcdefghijklmnopqrstu");
+
+        let mut buf = [0u8; 16];
+        unsafe { libc::prctl(libc::PR_GET_NAME, buf.as_mut_ptr(), 0, 0, 0) };
+        assert_eq!(&buf, b"abcdefghijklmno\0");
+    }
 }
 
 #[cfg(target_os = "windows")]
@@ -68,7 +78,9 @@ mod imp {
 
     impl Drop for NamedHandle {
         fn drop(&mut self) {
-            unsafe { CloseHandle(self.0) };
+            if !self.0.is_null() {
+                unsafe { CloseHandle(self.0) };
+            }
         }
     }
 
@@ -94,6 +106,21 @@ mod imp {
             .expect("event handle lock")
             .replace(NamedHandle::from(t));
     }
+
+    #[test]
+    fn set_title_sets_console_title_and_makes_a_handle() {
+        let title = "Pinkle, squirmy, blib, blab, blob";
+        set_title(title);
+
+        let mut t: Vec<u16> = std::ffi::OsString::from(title).encode_wide().collect();
+        t.push(0);
+        let mut buf = vec![0; t.len()];
+        let len = unsafe { winapi::um::wincon::GetConsoleTitleW(buf.as_mut_ptr(), buf.len() as u32) };
+
+        assert_eq!(len, title.len() as u32);
+        assert_eq!(buf, t);
+        assert!(EVENT_HANDLE.lock().unwrap().is_some());
+    }
 }
 
 #[cfg(not(any(
@@ -113,3 +140,8 @@ mod imp {
 }
 
 pub use imp::*;
+
+#[test]
+fn set_title_is_at_least_callable() {
+    set_title("bleep bloop");
+}
