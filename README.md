@@ -19,6 +19,7 @@ for task in &tasks {
     set_title(format!("example: {}", task));
     perform_task(task);
 }
+
 set_title("example: idle");
 ```
 
