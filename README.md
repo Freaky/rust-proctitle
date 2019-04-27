@@ -1,5 +1,7 @@
 # proctitle
 
+[![Build Status](https://travis-ci.org/Freaky/rust-proctitle.svg?branch=master)](https://travis-ci.org/Freaky/rust-proctitle)
+
 ## Cross-platform process titles.
 
 `proctitle` attempts to expose the closest safe approximation of the BSD
@@ -58,3 +60,4 @@ Explorer (View ⮕ Lower Pane View ⮕ Handles) and Process Hacker
 #### Everything Else
 
 Unsupported platforms merely receive a stub function that does nothing.
+

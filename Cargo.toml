@@ -11,6 +11,9 @@ keywords = ["process", "title", "setproctitle"]
 categories = ["os"]
 readme = "README.md"
 
+[badges]
+travis-ci = { repository = "Freaky/rust-proctitle" }
+
 [target.'cfg(target_os = "linux")'.dependencies]
 libc = "0.2.51"
 
