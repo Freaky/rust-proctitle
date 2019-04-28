@@ -1,6 +1,6 @@
 [package]
 name = "proctitle"
-version = "0.1.0"
+version = "0.1.1"
 description = "A safe interface to setting process titles"
 authors = ["Thomas Hurst <tom@hur.st>"]
 edition = "2018"
@@ -15,7 +15,7 @@ readme = "README.md"
 travis-ci = { repository = "Freaky/rust-proctitle" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-libc = "0.2.51"
+libc = "0.2.53"
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["handleapi", "synchapi", "wincon", "winerror", "winnt"]}
