@@ -115,11 +115,15 @@ mod imp {
         let mut t: Vec<u16> = std::ffi::OsString::from(title).encode_wide().collect();
         t.push(0);
         let mut buf = vec![0; t.len()];
-        let len = unsafe { winapi::um::wincon::GetConsoleTitleW(buf.as_mut_ptr(), buf.len() as u32) };
+        let len =
+            unsafe { winapi::um::wincon::GetConsoleTitleW(buf.as_mut_ptr(), buf.len() as u32) };
 
         assert_eq!(len, title.len() as u32, "length mismatch");
         assert_eq!(buf, t, "buffer mismatch");
-        assert!(EVENT_HANDLE.lock().unwrap().is_some(), "event handle missing");
+        assert!(
+            EVENT_HANDLE.lock().unwrap().is_some(),
+            "event handle missing"
+        );
     }
 }
 
@@ -147,5 +151,7 @@ pub use imp::*;
 fn set_title_is_at_least_callable() {
     set_title("What was it like being a hamster?");
     set_title(String::from("It was better than being a chicken."));
-    set_title(std::ffi::OsString::from("Have you seen the size of an egg?"));
+    set_title(std::ffi::OsString::from(
+        "Have you seen the size of an egg?",
+    ));
 }
