@@ -3,10 +3,10 @@
 
 #[cfg(any(
     target_os = "freebsd",
-    target_os = "hardenedbsd",
-    target_os = "dragonflybsd",
+    target_os = "dragonfly",
     target_os = "netbsd",
-    target_os = "openbsd"
+    target_os = "openbsd",
+    target_os = "bitrig",
 ))]
 mod imp {
     use std::ffi::CString;
@@ -125,10 +125,10 @@ mod imp {
 
 #[cfg(not(any(
     target_os = "freebsd",
-    target_os = "hardenedbsd",
-    target_os = "dragonflybsd",
+    target_os = "dragonfly",
     target_os = "netbsd",
     target_os = "openbsd",
+    target_os = "bitrig",
     target_os = "linux",
     target_os = "windows"
 )))]
