@@ -39,8 +39,8 @@ change as it works:
 
 #### BSD
 
-On BSDs, [`setproctitle()`] is used, and should pretty much Just Work.  Use
-`top -a` to see titles.
+On BSDs, [`setproctitle()`] is used, and should pretty much Just Work.  Tested
+on FreeBSD 12, DragonFlyBSD 5.4, OpenBSD 6.5, and NetBSD 8.0.
 
 #### Linux
 
