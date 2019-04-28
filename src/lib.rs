@@ -143,7 +143,7 @@ mod imp {
     pub fn set_title<T: AsRef<OsStr>>(_title: T) {}
 }
 
-pub use imp::*;
+pub use self::imp::*;
 
 // This races against the SetConsoleTitle() tests on Windows
 #[cfg(not(windows))]
